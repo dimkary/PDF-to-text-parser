@@ -1,5 +1,4 @@
-# extract_doc_info.py
-
+import sys
 from PyPDF2 import PdfFileReader
 
 def extract_information(pdf_path):
@@ -24,6 +23,7 @@ def extract_information(pdf_path):
     return information
 
 def text_extractor(pdf_path):
+    output = pdf_path.split(".")[-2]+".txt"
     with open(pdf_path, 'rb') as f:
         pdf = PdfFileReader(f)
         number_of_pages = pdf.getNumPages()
@@ -31,23 +31,23 @@ def text_extractor(pdf_path):
         
         for i in range(number_of_pages):
             page = pdf.getPage(i)
-            print(page)
-            print('Page type: {}'.format(str(type(page))))
             text = page.extractText()
-            print(text)
             
             if i == 0:
                 stream_type = "w"
             else:
                 stream_type = "a"
                 
-            with open("demofile1.txt", stream_type, encoding='utf-8') as f:
+            with open(output, stream_type, encoding='utf-8') as f:
+                f.write("######### PAGE {} #########\n".format(i))
                 f.write(text)
-                f.write("\n\n")
+                f.write("\n##########################\n\n")
                 f.close()
         
 if __name__ == '__main__':
-    path = '/path/to/pdffile.pdf'
+    args = sys.argv
+    print(args[1])
+    path = args[1]
     
     info = extract_information(path)
     text_extractor(path)
