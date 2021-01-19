@@ -40,7 +40,7 @@ def text_extractor(pdf_path):
                 
             with open(output, stream_type, encoding='utf-8') as f:
                 f.write("######### PAGE {} #########\n".format(i))
-                f.write(text)
+                f.write(text.strip())
                 f.write("\n##########################\n\n")
                 f.close()
         
@@ -51,4 +51,10 @@ if __name__ == '__main__':
     
     info = extract_information(path)
     text_extractor(path)
+    
+    source = args[2]
+    
+    with open(source, 'rb') as f:
+        source_text = f.readlines()
+    print(source_text)
     
